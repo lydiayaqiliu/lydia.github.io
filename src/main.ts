@@ -8,14 +8,6 @@ function getEls() {
   return { tabs, panels };
 }
 
-function panelIdFrom(tabId: string) {
-  return tabId.replace("tab-", "panel-");
-}
-
-function tabIdFromPanel(panelId: string) {
-  return panelId.replace("panel-", "tab-");
-}
-
 function activateTab(nextTab: HTMLButtonElement) {
   const { tabs, panels } = getEls();
 

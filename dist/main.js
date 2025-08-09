@@ -34,26 +34,6 @@ function handleClick(e) {
     const btn = e.currentTarget;
     activateTab(btn);
 }
-function handleKeydown(e) {
-    switch (e.key) {
-        case "ArrowRight":
-            e.preventDefault();
-            focusNextTab(1);
-            break;
-        case "ArrowLeft":
-            e.preventDefault();
-            focusNextTab(-1);
-            break;
-        case "Home":
-            e.preventDefault();
-            focusTabIndex(0);
-            break;
-        case "End":
-            e.preventDefault();
-            focusTabIndex(getEls().tabs.length - 1);
-            break;
-    }
-}
 function focusTabIndex(i) {
     const { tabs } = getEls();
     tabs[i].focus();
@@ -68,9 +48,7 @@ function initialTabFromHash() {
     const { tabs } = getEls();
     tabs.forEach(t => {
         t.addEventListener("click", handleClick);
-        t.addEventListener("keydown", handleKeydown);
     });
-    // Set initial tab based on URL hash
     const initial = document.getElementById(`tab-${initialTabFromHash()}`);
     if (initial)
         activateTab(initial);

@@ -1,11 +1,54 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <title>My Site</title>
+    <meta charset="UTF-8" />
+    <title>Lydia — Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      /* minimal styling; tweak as you like */
+      :root { --tab-accent: #334155; }
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 2rem; color: #0f172a; }
+      .tabs { border-bottom: 1px solid #e2e8f0; display: flex; gap: .5rem; }
+      .tab {
+        appearance: none; border: 0; background: transparent; padding: .5rem .9rem; border-radius: .5rem .5rem 0 0;
+        cursor: pointer; font-weight: 600; color: #334155;
+      }
+      .tab[aria-selected="true"] { background: #f1f5f9; color: var(--tab-accent); }
+      .panel { padding: 1rem; border: 1px solid #e2e8f0; border-top: 0; border-radius: 0 .5rem .5rem .5rem; }
+      .project { padding: .6rem 0; border-bottom: 1px dashed #e2e8f0; }
+      .project:last-child { border-bottom: 0; }
+      a { color: #0ea5e9; text-decoration: none; }
+      a:hover { text-decoration: underline; }
+    </style>
   </head>
   <body>
-    <h1>Hello, GitHub Pages!</h1>
+    <h1>Lydia</h1>
+
+    <!-- Tabs -->
+    <div class="tabs" role="tablist" aria-label="Sections">
+      <button class="tab" role="tab" id="tab-intro" aria-controls="panel-intro" aria-selected="true">About</button>
+      <button class="tab" role="tab" id="tab-projects" aria-controls="panel-projects" aria-selected="false">Projects</button>
+    </div>
+
+    <!-- Panels -->
+    <section class="panel" role="tabpanel" id="panel-intro" aria-labelledby="tab-intro">
+      <h2>About me</h2>
+      <p>Hi, I’m Lydia — a CS + Math student who builds data pipelines, LLM tools, and type-safe web apps.</p>
+      <p>I enjoy FastAPI + SQLAlchemy on the backend and TypeScript on the frontend. Currently exploring CI/CD on GitHub Actions.</p>
+    </section>
+
+    <section class="panel" role="tabpanel" id="panel-projects" aria-labelledby="tab-projects" hidden>
+      <h2>Projects</h2>
+      <div class="project">
+        <strong>Compliance Form Validator</strong> — FastAPI + S3 + Textract + LLM
+        <br /><a href="#">Code</a> · <a href="#">Demo</a>
+      </div>
+      <div class="project">
+        <strong>Keyboard-Driven Avatar</strong> — TS + Canvas; shows pressed keys above a cat sprite
+        <br /><a href="#">Code</a> · <a href="#">Demo</a>
+      </div>
+    </section>
+
     <script type="module" src="./dist/main.js"></script>
   </body>
 </html>

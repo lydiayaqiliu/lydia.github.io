@@ -64,3 +64,21 @@ function initialTabFromHash(): TabIds {
   const initial = document.getElementById(`tab-${initialTabFromHash()}`) as HTMLButtonElement | null;
   if (initial) activateTab(initial);
 })();
+
+(function initDemos() {
+  document.querySelectorAll<HTMLAnchorElement>('.demo-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const src = link.dataset.src!;
+      const container = link.parentElement!.querySelector<HTMLDivElement>('.demo-player')!;
+      const video = container.querySelector<HTMLVideoElement>('video')!;
+      const firstSource = video.querySelector<HTMLSourceElement>('source')!;
+      if (firstSource.src !== new URL(src, location.origin).href) {
+        firstSource.src = src;
+        video.load();
+      }
+      container.hidden = !container.hidden;
+      if (!container.hidden) video.play().catch(() => {/* autoplay blocked; user can press play */});
+    });
+  });
+})();

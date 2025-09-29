@@ -66,58 +66,66 @@ function initialTabFromHash(): TabIds {
 })();
 
 (function initDemos() {
-  const modal = document.querySelector<HTMLDivElement>('.demo-modal');
-  const dialog = modal?.querySelector<HTMLDivElement>('.demo-dialog') ?? null;
+  const modal  = document.querySelector<HTMLDivElement>('.demo-modal');
+  if (!modal) { console.warn('Missing .demo-modal'); return; }
 
-  if (!modal || !dialog) {
-    console.warn('Demo modal DOM is missing.');
-    return;
-  }
+  const dialog = modal.querySelector<HTMLDivElement>('.demo-dialog');
+  if (!dialog) { console.warn('Missing .demo-dialog'); return; }
 
-  function openDemo(src: string, poster?: string, title?: string, caption?: string) {
-    
-    // load video (no <source> node needed)
-    video.pause();
-    video.removeAttribute('src');
-    if (poster) video.setAttribute('poster', poster); else video.removeAttribute('poster');
-    video.src = src;   // keep relative; browser resolves under repo path
-    video.load();
+  const video  = dialog.querySelector<HTMLVideoElement>('video');
+  if (!video) { console.warn('Missing <video> inside .demo-dialog'); return; }
+
+
+  function openDemo(src: string) {
+    // load video into the modal's <video> element
+    if (video) {
+      video.pause();
+      video.removeAttribute('src');
+
+      video.src = src;     // this is where your mp4 path goes (from data-src)
+      video.load();
+
+      // try autoplay (will often be blocked, fallback is user click)
+      void video.play().catch(() => {});
+    }
 
     // show modal
-    modal.hidden = false;
-    modal.setAttribute('aria-hidden', 'false');
-    dialog.setAttribute('tabindex', '-1');
-    dialog.focus();
-
-    // try to play
-    video.play().catch(() => {/* user can press play */});
+    if (modal) {
+      modal.hidden = false;
+      modal.setAttribute('aria-hidden', 'false');
+    }
+    if (dialog) {
+      dialog.setAttribute('tabindex', '-1');
+      dialog.focus();
+    }
   }
 
   function closeDemo() {
-    video.pause();
-    modal.hidden = true;
-    modal.setAttribute('aria-hidden', 'true');
+    if (video) {
+      video.pause();
+    }
+    if (modal) {
+      modal.hidden = true;
+      modal.setAttribute('aria-hidden', 'true');
+    }
   }
 
-  // wire links
+  // wire each demo link
   document.querySelectorAll<HTMLAnchorElement>('.demo-link').forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
-      const src = link.dataset.src;
+      const src = link.dataset.src; // must be an .mp4 path
       if (!src) return;
       openDemo(
-        src,
-        link.dataset.poster || '',
-        link.dataset.title || link.textContent || 'Demo',
-        link.dataset.caption || ''
+        src
       );
     });
   });
 
-  // close actions (backdrop or X)
+  // backdrop or close button
   modal.addEventListener('click', (e) => {
     const t = e.target as HTMLElement;
-    if (t.matches('[data-close]') || t.classList.contains('demo-backdrop')) {
+    if (t.matches('[data-close]') || t === modal) {
       closeDemo();
     }
   });

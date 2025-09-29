@@ -19,6 +19,38 @@
       .project:last-child { border-bottom: 0; }
       a { color: #0ea5e9; text-decoration: none; }
       a:hover { text-decoration: underline; }
+      .demo-modal {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        background: rgba(0,0,0,.6);
+        z-index: 1000;
+        }
+        .demo-dialog {
+        position: relative;
+        max-width: min(900px, 90vw);
+        width: 90vw;
+        background: #000;
+        border-radius: .5rem;
+        padding: .5rem;
+        }
+        .demo-dialog video {
+        width: 100%;
+        height: auto;
+        display: block;
+        }
+        .demo-close {
+        position: absolute;
+        top: .25rem;
+        right: .5rem;
+        font-size: 1.5rem;
+        border: 0;
+        background: transparent;
+        color: white;
+        cursor: pointer;
+        }
+
     </style>
   </head>
   <body>
@@ -58,17 +90,15 @@
       </div>
     </section>
 
-    <div class="demo-modal" aria-hidden="true" hidden>
-  <div class="demo-backdrop" data-close></div>
-  <div class="demo-dialog" role="dialog" aria-modal="true" aria-labelledby="demo-title">
+<div class="demo-modal" aria-hidden="true" hidden>
+  <div class="demo-dialog" role="dialog" aria-modal="true">
     <button class="demo-close" type="button" aria-label="Close" data-close>×</button>
-    <h3 id="demo-title" class="demo-title"></h3>
-    <p class="demo-caption" hidden></p>
-    <div class="demo-video-wrap">
-      <video controls preload="metadata" playsinline></video>
-    </div>
+    <video controls preload="metadata" playsinline></video>
   </div>
 </div>
+
+
+
 
     <script type="module" src="./dist/main.js"></script>
   </body>

@@ -66,19 +66,36 @@ function initialTabFromHash(): TabIds {
 })();
 
 (function initDemos() {
+  const sharedContainer = document.querySelector<HTMLDivElement>('.demo-player');
+  const video = sharedContainer?.querySelector<HTMLVideoElement>('video') ?? null;
+  const firstSource = video?.querySelector<HTMLSourceElement>('source') ?? null;
+
   document.querySelectorAll<HTMLAnchorElement>('.demo-link').forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
-      const src = link.dataset.src!;
-      const container = link.parentElement!.querySelector<HTMLDivElement>('.demo-player')!;
-      const video = container.querySelector<HTMLVideoElement>('video')!;
-      const firstSource = video.querySelector<HTMLSourceElement>('source')!;
-      if (firstSource.src !== new URL(src, location.origin).href) {
-        firstSource.src = src;
+
+      if (!sharedContainer || !video || !firstSource) {
+        console.warn('Demo player DOM is missing.');
+        return;
+      }
+
+      // Use relative URLs safely (project pages): base = location.href (NOT origin)
+      const src = link.dataset.src;
+      const poster = link.dataset.poster || "";
+
+      if (!src) return;
+
+      const nextSrc = new URL(src, location.href).href;
+      const currentSrc = new URL(firstSource.src || "", location.href).href;
+
+      if (currentSrc !== nextSrc) {
+        firstSource.src = src;               // keep relative path; browser resolves correctly
+        video.poster = poster;
         video.load();
       }
-      container.hidden = !container.hidden;
-      if (!container.hidden) video.play().catch(() => {/* autoplay blocked; user can press play */});
+
+      sharedContainer.hidden = false;        // reveal shared player (don’t toggle to hidden)
+      video.play().catch(() => {/* autoplay may be blocked */});
     });
   });
 })();

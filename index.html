@@ -43,7 +43,14 @@
       <h2>Projects</h2>
       <div class="project">
         <strong>AI Ads Generation Backend with local hosted LLM</strong> — FastAPI + React + CLIP
-        <a href="downloads/neuroad1.zip" download>Code</a> · <a href="#" class="demo-link" data-src="downloads/neuroad_demo.mp4">Demo</a>
+        <a href="downloads/neuroad1.zip" download>Code</a> · <a
+      href="#"
+      class="demo-link"
+      data-src="downloads/neuroad_demo.mp4"
+      data-poster="downloads/demo-poster.jpg"
+      data-title="NeuroAd Demo"
+      data-caption="Short walkthrough of the ad-generation workflow."
+    >Demo</a>
       </div>
       <div class="project">
         <strong>Keyboard-Driven Avatar</strong> — TS + Canvas; shows pressed keys above a cat sprite
@@ -51,10 +58,15 @@
       </div>
     </section>
 
-     <div class="demo-player" hidden>
-    <video controls preload="metadata" width="720" poster="/downloads/demo-poster.jpg">
-      <source src="/downloads/demo.mp4" type="video/mp4" />
-    </video>
+    <div class="demo-modal" aria-hidden="true" hidden>
+  <div class="demo-backdrop" data-close></div>
+  <div class="demo-dialog" role="dialog" aria-modal="true" aria-labelledby="demo-title">
+    <button class="demo-close" type="button" aria-label="Close" data-close>×</button>
+    <h3 id="demo-title" class="demo-title"></h3>
+    <p class="demo-caption" hidden></p>
+    <div class="demo-video-wrap">
+      <video controls preload="metadata" playsinline></video>
+    </div>
   </div>
 </div>
 
